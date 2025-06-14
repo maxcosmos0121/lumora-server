@@ -3,7 +3,7 @@ package com.lumora.daily.service.impl;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.mapper.DailyReportMapper;
 import com.lumora.daily.service.IDailyReportService;
-import com.ruoyi.common.utils.DateUtils;
+import com.lumora.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

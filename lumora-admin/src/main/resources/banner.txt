@@ -1,0 +1,2 @@
+Application Version: ${lumora.version}
+Spring Boot Version: ${spring-boot.version}

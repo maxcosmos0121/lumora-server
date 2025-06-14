@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
-    <version>3.9.0</version>
+    <groupId>com.lumora</groupId>
+    <artifactId>lumora</artifactId>
+    <version>0.0.1</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>lumora</name>
+    <url>http://www.lumora.vip</url>
+    <description>lumora</description>
 
     <properties>
-        <ruoyi.version>3.9.0</ruoyi.version>
+        <lumora.version>0.0.1</lumora.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
@@ -152,55 +152,55 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-quartz</artifactId>
+                <version>${lumora.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-generator</artifactId>
+                <version>${lumora.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-framework</artifactId>
+                <version>${lumora.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-system</artifactId>
+                <version>${lumora.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.ruoyi</groupId>
+                <groupId>com.lumora</groupId>
                 <artifactId>lumora-daily</artifactId>
-                <version>${ruoyi.version}</version>
+                <version>${lumora.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-common</artifactId>
+                <version>${lumora.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
+        <module>lumora-admin</module>
+        <module>lumora-framework</module>
+        <module>lumora-system</module>
+        <module>lumora-quartz</module>
+        <module>lumora-generator</module>
+        <module>lumora-common</module>
         <module>lumora-daily</module>
     </modules>
     <packaging>pom</packaging>
