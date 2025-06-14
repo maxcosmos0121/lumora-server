@@ -1,13 +1,13 @@
 package com.ruoyi.framework.config.properties;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * druid 配置属性
- * 
- * @author ruoyi
+ *
+ * @author Leo
  */
 @Configuration
 public class DruidProperties
@@ -60,10 +60,10 @@ public class DruidProperties
 
         /** 配置获取连接等待超时的时间 */
         datasource.setMaxWait(maxWait);
-        
+
         /** 配置驱动连接超时时间，检测数据库建立连接的超时时间，单位是毫秒 */
         datasource.setConnectTimeout(connectTimeout);
-        
+
         /** 配置网络超时时间，等待数据库操作完成的网络超时时间，单位是毫秒 */
         datasource.setSocketTimeout(socketTimeout);
 

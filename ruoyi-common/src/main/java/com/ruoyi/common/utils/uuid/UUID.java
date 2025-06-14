@@ -10,7 +10,7 @@ import com.ruoyi.common.exception.UtilException;
 /**
  * 提供通用唯一识别码（universally unique identifier）（UUID）实现
  *
- * @author ruoyi
+ * @author Leo
  */
 public final class UUID implements java.io.Serializable, Comparable<UUID>
 {
@@ -33,7 +33,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 
     /**
      * 私有构造
-     * 
+     *
      * @param data 数据
      */
     private UUID(byte[] data)
@@ -67,7 +67,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 
     /**
      * 获取类型 4（伪随机生成的）UUID 的静态工厂。
-     * 
+     *
      * @return 随机生成的 {@code UUID}
      */
     public static UUID fastUUID()
@@ -77,7 +77,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 
     /**
      * 获取类型 4（伪随机生成的）UUID 的静态工厂。 使用加密的强伪随机数生成器生成该 UUID。
-     * 
+     *
      * @return 随机生成的 {@code UUID}
      */
     public static UUID randomUUID()
@@ -87,7 +87,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 
     /**
      * 获取类型 4（伪随机生成的）UUID 的静态工厂。 使用加密的强伪随机数生成器生成该 UUID。
-     * 
+     *
      * @param isSecure 是否使用{@link SecureRandom}如果是可以获得更安全的随机码，否则可以得到更好的性能
      * @return 随机生成的 {@code UUID}
      */
@@ -285,90 +285,33 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
     }
 
     /**
-     * 返回此{@code UUID} 的字符串表现形式。
+     * 返回指定数字对应的hex值
      *
-     * <p>
-     * UUID 的字符串表示形式由此 BNF 描述：
-     * 
-     * <pre>
-     * {@code
-     * UUID                   = <time_low>-<time_mid>-<time_high_and_version>-<variant_and_sequence>-<node>
-     * time_low               = 4*<hexOctet>
-     * time_mid               = 2*<hexOctet>
-     * time_high_and_version  = 2*<hexOctet>
-     * variant_and_sequence   = 2*<hexOctet>
-     * node                   = 6*<hexOctet>
-     * hexOctet               = <hexDigit><hexDigit>
-     * hexDigit               = [0-9a-fA-F]
-     * }
-     * </pre>
-     * 
-     * </blockquote>
-     *
-     * @return 此{@code UUID} 的字符串表现形式
-     * @see #toString(boolean)
+     * @param val 值
+     * @param digits 位
+     * @return 值
      */
-    @Override
-    public String toString()
+    private static String digits(long val, int digits)
     {
-        return toString(false);
+        long hi = 1L << (digits * 4);
+        return Long.toHexString(hi | (val & (hi - 1))).substring(1);
     }
 
     /**
-     * 返回此{@code UUID} 的字符串表现形式。
+     * 获取{@link SecureRandom}，类提供加密的强随机数生成器 (RNG)
      *
-     * <p>
-     * UUID 的字符串表示形式由此 BNF 描述：
-     * 
-     * <pre>
-     * {@code
-     * UUID                   = <time_low>-<time_mid>-<time_high_and_version>-<variant_and_sequence>-<node>
-     * time_low               = 4*<hexOctet>
-     * time_mid               = 2*<hexOctet>
-     * time_high_and_version  = 2*<hexOctet>
-     * variant_and_sequence   = 2*<hexOctet>
-     * node                   = 6*<hexOctet>
-     * hexOctet               = <hexDigit><hexDigit>
-     * hexDigit               = [0-9a-fA-F]
-     * }
-     * </pre>
-     * 
-     * </blockquote>
-     *
-     * @param isSimple 是否简单模式，简单模式为不带'-'的UUID字符串
-     * @return 此{@code UUID} 的字符串表现形式
+     * @return {@link SecureRandom}
      */
-    public String toString(boolean isSimple)
+    public static SecureRandom getSecureRandom()
     {
-        final StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
-        // time_low
-        builder.append(digits(mostSigBits >> 32, 8));
-        if (!isSimple)
+        try
         {
-            builder.append('-');
+            return SecureRandom.getInstance("SHA1PRNG");
         }
-        // time_mid
-        builder.append(digits(mostSigBits >> 16, 4));
-        if (!isSimple)
+        catch (NoSuchAlgorithmException e)
         {
-            builder.append('-');
+            throw new UtilException(e);
         }
-        // time_high_and_version
-        builder.append(digits(mostSigBits, 4));
-        if (!isSimple)
-        {
-            builder.append('-');
-        }
-        // variant_and_sequence
-        builder.append(digits(leastSigBits >> 48, 4));
-        if (!isSimple)
-        {
-            builder.append('-');
-        }
-        // node
-        builder.append(digits(leastSigBits, 12));
-
-        return builder.toString();
     }
 
     /**
@@ -430,17 +373,16 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
 
     // -------------------------------------------------------------------------------------------------------------------
     // Private method start
+
     /**
-     * 返回指定数字对应的hex值
-     * 
-     * @param val 值
-     * @param digits 位
-     * @return 值
+     * 获取随机数生成器对象<br>
+     * ThreadLocalRandom是JDK 7之后提供并发产生随机数，能够解决多个线程发生的竞争争夺。
+     *
+     * @return {@link ThreadLocalRandom}
      */
-    private static String digits(long val, int digits)
+    public static ThreadLocalRandom getRandom()
     {
-        long hi = 1L << (digits * 4);
-        return Long.toHexString(hi | (val & (hi - 1))).substring(1);
+        return ThreadLocalRandom.current();
     }
 
     /**
@@ -455,30 +397,89 @@ public final class UUID implements java.io.Serializable, Comparable<UUID>
     }
 
     /**
-     * 获取{@link SecureRandom}，类提供加密的强随机数生成器 (RNG)
-     * 
-     * @return {@link SecureRandom}
+     * 返回此{@code UUID} 的字符串表现形式。
+     *
+     * <p>
+     * UUID 的字符串表示形式由此 BNF 描述：
+     *
+     * <pre>
+     * {@code
+     * UUID                   = <time_low>-<time_mid>-<time_high_and_version>-<variant_and_sequence>-<node>
+     * time_low               = 4*<hexOctet>
+     * time_mid               = 2*<hexOctet>
+     * time_high_and_version  = 2*<hexOctet>
+     * variant_and_sequence   = 2*<hexOctet>
+     * node                   = 6*<hexOctet>
+     * hexOctet               = <hexDigit><hexDigit>
+     * hexDigit               = [0-9a-fA-F]
+     * }
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @return 此{@code UUID} 的字符串表现形式
+     * @see #toString(boolean)
      */
-    public static SecureRandom getSecureRandom()
+    @Override
+    public String toString()
     {
-        try
-        {
-            return SecureRandom.getInstance("SHA1PRNG");
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            throw new UtilException(e);
-        }
+        return toString(false);
     }
 
     /**
-     * 获取随机数生成器对象<br>
-     * ThreadLocalRandom是JDK 7之后提供并发产生随机数，能够解决多个线程发生的竞争争夺。
-     * 
-     * @return {@link ThreadLocalRandom}
+     * 返回此{@code UUID} 的字符串表现形式。
+     *
+     * <p>
+     * UUID 的字符串表示形式由此 BNF 描述：
+     *
+     * <pre>
+     * {@code
+     * UUID                   = <time_low>-<time_mid>-<time_high_and_version>-<variant_and_sequence>-<node>
+     * time_low               = 4*<hexOctet>
+     * time_mid               = 2*<hexOctet>
+     * time_high_and_version  = 2*<hexOctet>
+     * variant_and_sequence   = 2*<hexOctet>
+     * node                   = 6*<hexOctet>
+     * hexOctet               = <hexDigit><hexDigit>
+     * hexDigit               = [0-9a-fA-F]
+     * }
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @param isSimple 是否简单模式，简单模式为不带'-'的UUID字符串
+     * @return 此{@code UUID} 的字符串表现形式
      */
-    public static ThreadLocalRandom getRandom()
+    public String toString(boolean isSimple)
     {
-        return ThreadLocalRandom.current();
+        final StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
+        // time_low
+        builder.append(digits(mostSigBits >> 32, 8));
+        if (!isSimple)
+        {
+            builder.append('-');
+        }
+        // time_mid
+        builder.append(digits(mostSigBits >> 16, 4));
+        if (!isSimple)
+        {
+            builder.append('-');
+        }
+        // time_high_and_version
+        builder.append(digits(mostSigBits, 4));
+        if (!isSimple)
+        {
+            builder.append('-');
+        }
+        // variant_and_sequence
+        builder.append(digits(leastSigBits >> 48, 4));
+        if (!isSimple)
+        {
+            builder.append('-');
+        }
+        // node
+        builder.append(digits(leastSigBits, 12));
+
+        return builder.toString();
     }
 }

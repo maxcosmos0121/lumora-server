@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lumora.daily.mapper.DailyReportMapper">
+
+    <resultMap type="com.lumora.daily.domain.DailyReport" id="DailyReportResult">
+        <result property="reportId" column="report_id"/>
+        <result property="day" column="day"/>
+        <result property="week" column="week"/>
+        <result property="city" column="city"/>
+        <result property="weather" column="weather"/>
+        <result property="mood" column="mood"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectDailyReportVo">
+        select report_id, day, week, city, weather, mood, del_flag, create_by, create_time, update_by, update_time, remark
+        from daily_report
+    </sql>
+
+    <select id="selectDailyReportList" parameterType="com.lumora.daily.domain.DailyReport"
+            resultMap="DailyReportResult">
+        <include refid="selectDailyReportVo"/>
+        <where>
+            <if test="day != null ">and day = #{day}</if>
+            <if test="week != null  and week != ''">and week = #{week}</if>
+            <if test="city != null  and city != ''">and city = #{city}</if>
+            <if test="weather != null  and weather != ''">and weather = #{weather}</if>
+            <if test="mood != null  and mood != ''">and mood = #{mood}</if>
+        </where>
+    </select>
+
+    <select id="selectDailyReportByReportId" parameterType="Long" resultMap="DailyReportResult">
+        <include refid="selectDailyReportVo"/>
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertDailyReport" parameterType="com.lumora.daily.domain.DailyReport" useGeneratedKeys="true"
+            keyProperty="reportId">
+        insert into daily_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="day != null">day,</if>
+            <if test="week != null">week,</if>
+            <if test="city != null">city,</if>
+            <if test="weather != null">weather,</if>
+            <if test="mood != null">mood,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="day != null">#{day},</if>
+            <if test="week != null">#{week},</if>
+            <if test="city != null">#{city},</if>
+            <if test="weather != null">#{weather},</if>
+            <if test="mood != null">#{mood},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDailyReport" parameterType="com.lumora.daily.domain.DailyReport">
+        update daily_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="day != null">day = #{day},</if>
+            <if test="week != null">week = #{week},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="weather != null">weather = #{weather},</if>
+            <if test="mood != null">mood = #{mood},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteDailyReportByReportId" parameterType="Long">
+        delete
+        from daily_report
+        where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteDailyReportByReportIds" parameterType="String">
+        delete from daily_report where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,21 +1,16 @@
 package com.ruoyi.common.filter;
 
-import java.io.IOException;
-
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import com.ruoyi.common.utils.StringUtils;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
-import com.ruoyi.common.utils.StringUtils;
+
+import java.io.IOException;
 
 /**
  * Repeatable 过滤器
  *
- * @author ruoyi
+ * @author Leo
  */
 public class RepeatableFilter implements Filter
 {

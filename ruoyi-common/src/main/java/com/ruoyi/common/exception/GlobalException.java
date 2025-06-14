@@ -2,8 +2,8 @@ package com.ruoyi.common.exception;
 
 /**
  * 全局异常
- * 
- * @author ruoyi
+ *
+ * @author Leo
  */
 public class GlobalException extends RuntimeException
 {

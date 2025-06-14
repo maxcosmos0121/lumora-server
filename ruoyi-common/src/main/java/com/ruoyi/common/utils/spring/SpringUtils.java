@@ -13,27 +13,38 @@ import com.ruoyi.common.utils.StringUtils;
 
 /**
  * spring工具类 方便在非spring管理环境中获取bean
- * 
- * @author ruoyi
+ *
+ * @author Leo
  */
 @Component
-public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware 
+public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware
 {
     /** Spring应用上下文环境 */
     private static ConfigurableListableBeanFactory beanFactory;
 
     private static ApplicationContext applicationContext;
 
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException 
+    /**
+     * 获取aop代理对象
+     *
+     * @param invoker
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getAopProxy(T invoker)
     {
-        SpringUtils.beanFactory = beanFactory;
+        Object proxy = AopContext.currentProxy();
+        if (((Advised) proxy).getTargetSource().getTargetClass() == invoker.getClass())
+        {
+            return (T) proxy;
+        }
+        return invoker;
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException 
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException
     {
-        SpringUtils.applicationContext = applicationContext;
+        SpringUtils.beanFactory = beanFactory;
     }
 
     /**
@@ -112,21 +123,10 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
         return beanFactory.getAliases(name);
     }
 
-    /**
-     * 获取aop代理对象
-     * 
-     * @param invoker
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T getAopProxy(T invoker)
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
     {
-        Object proxy = AopContext.currentProxy();
-        if (((Advised) proxy).getTargetSource().getTargetClass() == invoker.getClass())
-        {
-            return (T) proxy;
-        }
-        return invoker;
+        SpringUtils.applicationContext = applicationContext;
     }
 
     /**

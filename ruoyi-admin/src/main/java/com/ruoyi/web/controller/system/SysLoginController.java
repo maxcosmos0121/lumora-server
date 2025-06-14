@@ -26,8 +26,8 @@ import com.ruoyi.system.service.ISysMenuService;
 
 /**
  * 登录验证
- * 
- * @author ruoyi
+ *
+ * @author Leo
  */
 @RestController
 public class SysLoginController
@@ -49,7 +49,7 @@ public class SysLoginController
 
     /**
      * 登录方法
-     * 
+     *
      * @param loginBody 登录信息
      * @return 结果
      */
@@ -66,7 +66,7 @@ public class SysLoginController
 
     /**
      * 获取用户信息
-     * 
+     *
      * @return 用户信息
      */
     @GetMapping("getInfo")
@@ -94,7 +94,7 @@ public class SysLoginController
 
     /**
      * 获取路由信息
-     * 
+     *
      * @return 路由信息
      */
     @GetMapping("getRouters")
@@ -104,7 +104,7 @@ public class SysLoginController
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));
     }
-    
+
     // 检查初始密码是否提醒修改
     public boolean initPasswordIsModify(Date pwdUpdateDate)
     {
