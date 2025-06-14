@@ -1,6 +1,6 @@
 package com.lumora.framework.config;
 
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.constant.Constants;
 import com.lumora.framework.interceptor.RepeatSubmitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     {
         /** 本地文件上传路径 */
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
-                .addResourceLocations("file:" + RuoYiConfig.getProfile() + "/");
+                .addResourceLocations("file:" + LumoraConfig.getProfile() + "/");
 
         /** swagger配置 */
         registry.addResourceHandler("/swagger-ui/**")

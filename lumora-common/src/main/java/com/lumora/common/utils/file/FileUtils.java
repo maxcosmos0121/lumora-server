@@ -1,6 +1,6 @@
 package com.lumora.common.utils.file;
 
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.constant.Constants;
 import com.lumora.common.utils.DateUtils;
 import com.lumora.common.utils.StringUtils;
@@ -69,7 +69,7 @@ public class FileUtils
      */
     public static String writeImportBytes(byte[] data) throws IOException
     {
-        return writeBytes(data, RuoYiConfig.getImportPath());
+        return writeBytes(data, LumoraConfig.getImportPath());
     }
 
     /**

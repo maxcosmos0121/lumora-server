@@ -2,7 +2,7 @@ package com.lumora.common.utils.ip;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.constant.Constants;
 import com.lumora.common.utils.StringUtils;
 import com.lumora.common.utils.http.HttpUtils;
@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (LumoraConfig.isAddressEnabled())
         {
             try
             {

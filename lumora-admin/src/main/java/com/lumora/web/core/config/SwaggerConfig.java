@@ -3,7 +3,7 @@ package com.lumora.web.core.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -21,7 +21,7 @@ public class SwaggerConfig
 {
     /** 系统基础配置 */
     @Autowired
-    private RuoYiConfig ruoyiConfig;
+    private LumoraConfig lumoraConfig;
 
     /**
      * 自定义的 OpenAPI 对象
@@ -57,8 +57,8 @@ public class SwaggerConfig
                 // 描述
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
                 // 作者信息
-                .contact(new Contact().name(ruoyiConfig.getName()))
+                .contact(new Contact().name(lumoraConfig.getName()))
                 // 版本
-                .version("版本号:" + ruoyiConfig.getVersion());
+                .version("版本号:" + lumoraConfig.getVersion());
     }
 }

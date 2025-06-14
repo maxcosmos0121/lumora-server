@@ -1,6 +1,6 @@
 package com.lumora.common.utils.file;
 
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.constant.Constants;
 import com.lumora.common.exception.file.FileNameLengthLimitExceededException;
 import com.lumora.common.exception.file.FileSizeLimitExceededException;
@@ -37,7 +37,7 @@ public class FileUploadUtils
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = RuoYiConfig.getProfile();
+    private static String defaultBaseDir = LumoraConfig.getProfile();
 
     public static void setDefaultBaseDir(String defaultBaseDir)
     {
@@ -168,7 +168,7 @@ public class FileUploadUtils
 
     public static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
-        int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
+        int dirLastIndex = LumoraConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
     }

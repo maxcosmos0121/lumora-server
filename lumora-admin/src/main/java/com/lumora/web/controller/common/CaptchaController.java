@@ -1,7 +1,7 @@
 package com.lumora.web.controller.common;
 
 import com.google.code.kaptcha.Producer;
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.constant.CacheConstants;
 import com.lumora.common.constant.Constants;
 import com.lumora.common.core.domain.AjaxResult;
@@ -62,7 +62,7 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = RuoYiConfig.getCaptchaType();
+        String captchaType = LumoraConfig.getCaptchaType();
         if ("math".equals(captchaType))
         {
             String capText = captchaProducerMath.createText();

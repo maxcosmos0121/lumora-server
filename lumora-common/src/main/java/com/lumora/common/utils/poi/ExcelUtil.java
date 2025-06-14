@@ -4,7 +4,7 @@ import com.lumora.common.annotation.Excel;
 import com.lumora.common.annotation.Excel.ColumnType;
 import com.lumora.common.annotation.Excel.Type;
 import com.lumora.common.annotation.Excels;
-import com.lumora.common.config.RuoYiConfig;
+import com.lumora.common.config.LumoraConfig;
 import com.lumora.common.core.domain.AjaxResult;
 import com.lumora.common.core.text.Convert;
 import com.lumora.common.exception.UtilException;
@@ -1420,7 +1420,7 @@ public class ExcelUtil<T>
      */
     public String getAbsoluteFile(String filename)
     {
-        String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+        String downloadPath = LumoraConfig.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists())
         {
