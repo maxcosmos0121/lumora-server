@@ -1,6 +1,7 @@
 package com.lumora.daily.service;
 
 import com.lumora.daily.domain.DailyReport;
+import com.lumora.daily.dto.DailyReportDTO;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface IDailyReportService {
      * @param dailyReport 日常记录_每日日报
      * @return 日常记录_每日日报集合
      */
-    public List<DailyReport> selectDailyReportList(DailyReport dailyReport);
+    public List<DailyReport> selectDailyReportList(DailyReportDTO dailyReport);
 
     /**
      * 新增日常记录_每日日报

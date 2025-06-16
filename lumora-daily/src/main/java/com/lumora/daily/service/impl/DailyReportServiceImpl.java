@@ -1,6 +1,7 @@
 package com.lumora.daily.service.impl;
 
 import com.lumora.daily.domain.DailyReport;
+import com.lumora.daily.dto.DailyReportDTO;
 import com.lumora.daily.mapper.DailyReportMapper;
 import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.utils.DateUtils;
@@ -38,7 +39,7 @@ public class DailyReportServiceImpl implements IDailyReportService {
      * @return 日常记录_每日日报
      */
     @Override
-    public List<DailyReport> selectDailyReportList(DailyReport dailyReport) {
+    public List<DailyReport> selectDailyReportList(DailyReportDTO dailyReport) {
         return dailyReportMapper.selectDailyReportList(dailyReport);
     }
 

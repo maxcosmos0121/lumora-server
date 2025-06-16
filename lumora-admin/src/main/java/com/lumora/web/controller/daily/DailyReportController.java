@@ -1,6 +1,7 @@
 package com.lumora.web.controller.daily;
 
 import com.lumora.daily.domain.DailyReport;
+import com.lumora.daily.dto.DailyReportDTO;
 import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.annotation.Log;
 import com.lumora.common.core.controller.BaseController;
@@ -16,15 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *  日常记录_每日日报Controller
+ * 日常记录_每日日报Controller
  *
- *  @author Leo
- *  @date 2025-06-11
+ * @author Leo
+ * @date 2025-06-11
  */
 @RestController
 @RequestMapping("/daily/report")
-public class DailyReportController extends BaseController
-{
+public class DailyReportController extends BaseController {
     @Autowired
     private IDailyReportService dailyReportService;
 
@@ -33,8 +33,7 @@ public class DailyReportController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('daily:report:list')")
     @GetMapping("/list")
-    public TableDataInfo list(DailyReport dailyReport)
-    {
+    public TableDataInfo list(DailyReportDTO dailyReport) {
         startPage();
         List<DailyReport> list = dailyReportService.selectDailyReportList(dailyReport);
         return getDataTable(list);
@@ -46,8 +45,7 @@ public class DailyReportController extends BaseController
     @PreAuthorize("@ss.hasPermi('daily:report:export')")
     @Log(title = "日常记录_每日日报", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, DailyReport dailyReport)
-    {
+    public void export(HttpServletResponse response, DailyReportDTO dailyReport) {
         List<DailyReport> list = dailyReportService.selectDailyReportList(dailyReport);
         ExcelUtil<DailyReport> util = new ExcelUtil<DailyReport>(DailyReport.class);
         util.exportExcel(response, list, "日常记录_每日日报数据");
@@ -58,8 +56,7 @@ public class DailyReportController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('daily:report:query')")
     @GetMapping(value = "/{reportId}")
-    public AjaxResult getInfo(@PathVariable("reportId") Long reportId)
-    {
+    public AjaxResult getInfo(@PathVariable("reportId") Long reportId) {
         return success(dailyReportService.selectDailyReportByReportId(reportId));
     }
 
@@ -69,8 +66,7 @@ public class DailyReportController extends BaseController
     @PreAuthorize("@ss.hasPermi('daily:report:add')")
     @Log(title = "日常记录_每日日报", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody DailyReport dailyReport)
-    {
+    public AjaxResult add(@RequestBody DailyReport dailyReport) {
         return toAjax(dailyReportService.insertDailyReport(dailyReport));
     }
 
@@ -80,8 +76,7 @@ public class DailyReportController extends BaseController
     @PreAuthorize("@ss.hasPermi('daily:report:edit')")
     @Log(title = "日常记录_每日日报", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody DailyReport dailyReport)
-    {
+    public AjaxResult edit(@RequestBody DailyReport dailyReport) {
         return toAjax(dailyReportService.updateDailyReport(dailyReport));
     }
 
@@ -90,9 +85,8 @@ public class DailyReportController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('daily:report:remove')")
     @Log(title = "日常记录_每日日报", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{reportIds}")
-    public AjaxResult remove(@PathVariable Long[] reportIds)
-    {
+    @DeleteMapping("/{reportIds}")
+    public AjaxResult remove(@PathVariable Long[] reportIds) {
         return toAjax(dailyReportService.deleteDailyReportByReportIds(reportIds));
     }
 }

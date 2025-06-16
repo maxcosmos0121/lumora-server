@@ -24,15 +24,12 @@
         from daily_report
     </sql>
 
-    <select id="selectDailyReportList" parameterType="com.lumora.daily.domain.DailyReport"
+    <select id="selectDailyReportList" parameterType="com.lumora.daily.dto.DailyReportDTO"
             resultMap="DailyReportResult">
         <include refid="selectDailyReportVo"/>
         <where>
-            <if test="day != null ">and day = #{day}</if>
+            <if test="day != null ">and day like concat('%',#{day},'%')</if>
             <if test="week != null  and week != ''">and week = #{week}</if>
-            <if test="city != null  and city != ''">and city = #{city}</if>
-            <if test="weather != null  and weather != ''">and weather = #{weather}</if>
-            <if test="mood != null  and mood != ''">and mood = #{mood}</if>
         </where>
     </select>
 
