@@ -1,10 +1,13 @@
 package com.lumora.daily.service.impl;
 
 import com.lumora.daily.domain.DailyReport;
+import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportDTO;
 import com.lumora.daily.mapper.DailyReportMapper;
+import com.lumora.daily.service.IDailyReportContentService;
 import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.utils.DateUtils;
+import com.lumora.daily.vo.DailyReportRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,9 @@ public class DailyReportServiceImpl implements IDailyReportService {
     @Autowired
     private DailyReportMapper dailyReportMapper;
 
+    @Autowired
+    private IDailyReportContentService dailyReportContentService;
+
     /**
      * 查询日常记录_每日日报
      *
@@ -28,8 +34,15 @@ public class DailyReportServiceImpl implements IDailyReportService {
      * @return 日常记录_每日日报
      */
     @Override
-    public DailyReport selectDailyReportByReportId(Long reportId) {
-        return dailyReportMapper.selectDailyReportByReportId(reportId);
+    public DailyReportRespVo selectDailyReportByReportId(Long reportId) {
+        DailyReportRespVo dailyReportRespVo = new DailyReportRespVo();
+        DailyReport dailyReport = dailyReportMapper.selectDailyReportByReportId(reportId);
+        DailyReportContent dailyReportContent = new DailyReportContent();
+        dailyReportContent.setReportId(reportId);
+        List<DailyReportContent> dailyReportContents = dailyReportContentService.selectDailyReportContentList(dailyReportContent);
+        dailyReportRespVo.setDailyReport(dailyReport);
+        dailyReportRespVo.setDailyReportContents(dailyReportContents);
+        return dailyReportRespVo;
     }
 
     /**
