@@ -63,4 +63,6 @@ public interface IDailyReportService {
     public int deleteDailyReportByReportId(Long reportId);
 
     int submit(DailyReportReqVo dailyReport);
+
+    int save(DailyReportReqVo dailyReport);
 }

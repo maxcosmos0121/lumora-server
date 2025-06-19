@@ -107,6 +107,12 @@ public class DailyReportServiceImpl implements IDailyReportService {
 
     @Override
     public int submit(DailyReportReqVo dailyReport) {
+        dailyReport.getDailyReport().setReportStatus("Y");
+        return this.save(dailyReport);
+    }
+
+    @Override
+    public int save(DailyReportReqVo dailyReport) {
         DailyReport report = dailyReport.getDailyReport();
         int i = this.updateDailyReport(report);
         List<DailyReportContentDTO> dailyReportContents = dailyReport.getDailyReportContents();

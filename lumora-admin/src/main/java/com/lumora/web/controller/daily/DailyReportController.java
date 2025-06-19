@@ -92,12 +92,22 @@ public class DailyReportController extends BaseController {
     }
 
     /**
-     * 新增日常记录_每日日报
+     * 日常记录_每日日报_提交
      */
     @PreAuthorize("@ss.hasPermi('daily:report:submit')")
-    @Log(title = "日常记录_每日日报", businessType = BusinessType.INSERT)
+    @Log(title = "日常记录_每日日报_提交", businessType = BusinessType.INSERT)
     @PostMapping("/submit")
     public AjaxResult submit(@RequestBody DailyReportReqVo dailyReport) {
         return toAjax(dailyReportService.submit(dailyReport));
+    }
+
+    /**
+     * 日常记录_每日日报_保存
+     */
+    @PreAuthorize("@ss.hasPermi('daily:report:save')")
+    @Log(title = "日常记录_每日日报_保存", businessType = BusinessType.INSERT)
+    @PostMapping("/save")
+    public AjaxResult save(@RequestBody DailyReportReqVo dailyReport) {
+        return toAjax(dailyReportService.save(dailyReport));
     }
 }

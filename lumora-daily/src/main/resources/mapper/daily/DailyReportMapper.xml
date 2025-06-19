@@ -11,6 +11,7 @@
         <result property="city" column="city"/>
         <result property="weather" column="weather"/>
         <result property="mood" column="mood"/>
+        <result property="reportStatus" column="report_status"/>
         <result property="delFlag" column="del_flag"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
@@ -20,7 +21,7 @@
     </resultMap>
 
     <sql id="selectDailyReportVo">
-        select report_id, day, week, city, weather, mood, del_flag, create_by, create_time, update_by, update_time, remark
+        select report_id, day, week, city, weather, mood, report_status, del_flag, create_by, create_time, update_by, update_time, remark
         from daily_report
     </sql>
 
@@ -47,6 +48,7 @@
             <if test="city != null">city,</if>
             <if test="weather != null">weather,</if>
             <if test="mood != null">mood,</if>
+            <if test="reportStatus != null">report_status,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
@@ -60,6 +62,7 @@
             <if test="city != null">#{city},</if>
             <if test="weather != null">#{weather},</if>
             <if test="mood != null">#{mood},</if>
+            <if test="reportStatus != null">#{reportStatus},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -77,6 +80,7 @@
             <if test="city != null">city = #{city},</if>
             <if test="weather != null">weather = #{weather},</if>
             <if test="mood != null">mood = #{mood},</if>
+            <if test="reportStatus != null">report_status = #{reportStatus},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

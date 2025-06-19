@@ -3,6 +3,8 @@ package com.lumora.daily.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lumora.common.annotation.Excel;
 import com.lumora.common.core.domain.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,7 +16,10 @@ import java.util.Date;
  * @author Leo
  * @date 2025-06-11
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class DailyReport extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -54,81 +59,14 @@ public class DailyReport extends BaseEntity {
     private String mood;
 
     /**
+     * 日报状态（Y提交 N未提交）
+     */
+    @Excel(name = "日报状态")
+    private String reportStatus;
+
+    /**
      * 删除标志（0代表存在 2代表删除）
      */
     private String delFlag;
 
-    public Long getReportId() {
-        return reportId;
-    }
-
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
-    }
-
-    public Date getDay() {
-        return day;
-    }
-
-    public void setDay(Date day) {
-        this.day = day;
-    }
-
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getWeather() {
-        return weather;
-    }
-
-    public void setWeather(String weather) {
-        this.weather = weather;
-    }
-
-    public String getMood() {
-        return mood;
-    }
-
-    public void setMood(String mood) {
-        this.mood = mood;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("reportId", getReportId())
-                .append("day", getDay())
-                .append("week", getWeek())
-                .append("city", getCity())
-                .append("weather", getWeather())
-                .append("mood", getMood())
-                .append("delFlag", getDelFlag())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
-                .toString();
-    }
 }
