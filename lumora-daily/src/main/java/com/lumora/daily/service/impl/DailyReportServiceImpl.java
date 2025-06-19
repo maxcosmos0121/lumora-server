@@ -2,12 +2,15 @@ package com.lumora.daily.service.impl;
 
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
+import com.lumora.daily.dto.DailyReportContentDTO;
 import com.lumora.daily.dto.DailyReportDTO;
 import com.lumora.daily.mapper.DailyReportMapper;
 import com.lumora.daily.service.IDailyReportContentService;
 import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.utils.DateUtils;
+import com.lumora.daily.vo.DailyReportReqVo;
 import com.lumora.daily.vo.DailyReportRespVo;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,5 +103,31 @@ public class DailyReportServiceImpl implements IDailyReportService {
     @Override
     public int deleteDailyReportByReportId(Long reportId) {
         return dailyReportMapper.deleteDailyReportByReportId(reportId);
+    }
+
+    @Override
+    public int submit(DailyReportReqVo dailyReport) {
+        DailyReport report = dailyReport.getDailyReport();
+        int i = this.updateDailyReport(report);
+        List<DailyReportContentDTO> dailyReportContents = dailyReport.getDailyReportContents();
+        dailyReportContents.forEach(contentDTO -> {
+            switch (contentDTO.getStatus()) {
+                case "add": {
+                    contentDTO.setReportId(report.getReportId());
+                    contentDTO.setReportContentId(null);
+                    dailyReportContentService.insertDailyReportContent(contentDTO);
+                    break;
+                }
+                case "delete": {
+                    dailyReportContentService.deleteDailyReportContentByReportContentId(contentDTO.getReportContentId());
+                    break;
+                }
+                default: {
+                    dailyReportContentService.updateDailyReportContent(contentDTO);
+                    break;
+                }
+            }
+        });
+        return i;
     }
 }

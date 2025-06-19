@@ -9,6 +9,7 @@ import com.lumora.common.core.domain.AjaxResult;
 import com.lumora.common.core.page.TableDataInfo;
 import com.lumora.common.enums.BusinessType;
 import com.lumora.common.utils.poi.ExcelUtil;
+import com.lumora.daily.vo.DailyReportReqVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -88,5 +89,15 @@ public class DailyReportController extends BaseController {
     @DeleteMapping("/{reportIds}")
     public AjaxResult remove(@PathVariable Long[] reportIds) {
         return toAjax(dailyReportService.deleteDailyReportByReportIds(reportIds));
+    }
+
+    /**
+     * 新增日常记录_每日日报
+     */
+    @PreAuthorize("@ss.hasPermi('daily:report:submit')")
+    @Log(title = "日常记录_每日日报", businessType = BusinessType.INSERT)
+    @PostMapping("/submit")
+    public AjaxResult submit(@RequestBody DailyReportReqVo dailyReport) {
+        return toAjax(dailyReportService.submit(dailyReport));
     }
 }

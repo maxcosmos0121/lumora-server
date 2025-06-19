@@ -2,6 +2,7 @@ package com.lumora.daily.service;
 
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.dto.DailyReportDTO;
+import com.lumora.daily.vo.DailyReportReqVo;
 import com.lumora.daily.vo.DailyReportRespVo;
 
 import java.util.List;
@@ -60,4 +61,6 @@ public interface IDailyReportService {
      * @return 结果
      */
     public int deleteDailyReportByReportId(Long reportId);
+
+    int submit(DailyReportReqVo dailyReport);
 }
