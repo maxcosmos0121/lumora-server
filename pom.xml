@@ -149,6 +149,12 @@
                 <version>1.18.38</version>
             </dependency>
 
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-ai</artifactId>
+                <version>5.8.38</version>
+            </dependency>
+
             <!-- 验证码 -->
             <dependency>
                 <groupId>pro.fessional</groupId>

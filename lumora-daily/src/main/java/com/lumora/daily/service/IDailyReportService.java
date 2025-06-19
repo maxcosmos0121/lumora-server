@@ -65,4 +65,9 @@ public interface IDailyReportService {
     int submit(DailyReportReqVo dailyReport);
 
     int save(DailyReportReqVo dailyReport);
+
+    /**
+     * 批量新增日常记录_每日日报
+     */
+    void addDailyReportBatch();
 }

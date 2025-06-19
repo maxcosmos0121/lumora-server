@@ -548,4 +548,9 @@ public class SysUserServiceImpl implements ISysUserService
         }
         return successMsg.toString();
     }
+
+    @Override
+    public List<SysUser> selectUsers() {
+        return userMapper.selectUsers();
+    }
 }

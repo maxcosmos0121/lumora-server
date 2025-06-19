@@ -35,6 +35,12 @@
             <artifactId>lumora-common</artifactId>
         </dependency>
 
+        <!-- 日常记录 -->
+        <dependency>
+            <groupId>com.lumora</groupId>
+            <artifactId>lumora-daily</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,6 +1,9 @@
 package com.lumora.daily.service.impl;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.lumora.common.annotation.DataScope;
+import com.lumora.common.core.domain.entity.SysUser;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportContentDTO;
@@ -11,7 +14,9 @@ import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.utils.DateUtils;
 import com.lumora.daily.vo.DailyReportReqVo;
 import com.lumora.daily.vo.DailyReportRespVo;
+import com.lumora.system.service.ISysUserService;
 import jakarta.annotation.Resource;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +35,10 @@ public class DailyReportServiceImpl implements IDailyReportService {
 
     @Autowired
     private IDailyReportContentService dailyReportContentService;
+
+    @Resource
+    private ISysUserService sysUserService;
+
 
     /**
      * 查询日常记录_每日日报
@@ -137,5 +146,28 @@ public class DailyReportServiceImpl implements IDailyReportService {
             }
         });
         return i;
+    }
+
+    @Override
+    public void addDailyReportBatch() {
+        SysUser sysUser = new SysUser();
+        List<SysUser> sysUsers = sysUserService.selectUsers();
+
+        DateTime now = DateUtil.date();
+        int week = DateUtil.dayOfWeek(now);
+        week = (week == 1) ? 7 : week - 1;
+
+        DailyReport dailyReport = new DailyReport();
+        dailyReport.setDay(now);
+        dailyReport.setWeek(String.valueOf(week));
+
+        sysUsers.forEach(user -> {
+            if ("admin".equals(user.getUserName())) {
+                return;
+            }
+            dailyReport.setCreateBy(user.getUserName());
+
+            this.insertDailyReport(dailyReport);
+        });
     }
 }
