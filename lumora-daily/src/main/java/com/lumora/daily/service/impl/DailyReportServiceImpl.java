@@ -1,5 +1,6 @@
 package com.lumora.daily.service.impl;
 
+import com.lumora.common.annotation.DataScope;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportContentDTO;
@@ -55,6 +56,7 @@ public class DailyReportServiceImpl implements IDailyReportService {
      * @return 日常记录_每日日报
      */
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<DailyReport> selectDailyReportList(DailyReportDTO dailyReport) {
         return dailyReportMapper.selectDailyReportList(dailyReport);
     }

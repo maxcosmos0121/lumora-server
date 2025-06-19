@@ -21,16 +21,33 @@
     </resultMap>
 
     <sql id="selectDailyReportVo">
-        select report_id, day, week, city, weather, mood, report_status, del_flag, create_by, create_time, update_by, update_time, remark
-        from daily_report
+        SELECT
+            dr.report_id,
+            dr.DAY,
+            dr.WEEK,
+            dr.city,
+            dr.weather,
+            dr.mood,
+            dr.report_status,
+            dr.del_flag,
+            dr.create_by,
+            dr.create_time,
+            dr.update_by,
+            dr.update_time,
+            dr.remark
+        FROM
+            daily_report AS dr
+                LEFT JOIN sys_user AS u ON u.user_name = dr.create_by
+                LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
     </sql>
 
     <select id="selectDailyReportList" parameterType="com.lumora.daily.dto.DailyReportDTO"
             resultMap="DailyReportResult">
         <include refid="selectDailyReportVo"/>
         <where>
-            <if test="day != null ">and day like concat('%',#{day},'%')</if>
-            <if test="week != null  and week != ''">and week = #{week}</if>
+            <if test="day != null ">and dr.day like concat('%',#{day},'%')</if>
+            <if test="week != null  and week != ''">and dr.week = #{week}</if>
+            ${params.dataScope}
         </where>
     </select>
 
