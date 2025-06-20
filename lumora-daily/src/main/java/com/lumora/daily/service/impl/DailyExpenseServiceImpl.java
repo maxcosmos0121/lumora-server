@@ -2,7 +2,10 @@ package com.lumora.daily.service.impl;
 
 import java.util.List;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.lumora.common.annotation.DataScope;
+import com.lumora.common.core.domain.entity.SysUser;
 import com.lumora.common.utils.DateUtils;
 import com.lumora.daily.domain.DailyExpenseDetails;
 import com.lumora.daily.domain.DailyReport;
@@ -12,6 +15,7 @@ import com.lumora.daily.service.IDailyExpenseDetailsService;
 import com.lumora.daily.vo.DailyExpenseReqVo;
 import com.lumora.daily.vo.DailyExpenseRespVo;
 import com.lumora.daily.vo.DailyExpenseVo;
+import com.lumora.system.service.ISysUserService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,9 @@ public class DailyExpenseServiceImpl implements IDailyExpenseService {
 
     @Resource
     private IDailyExpenseDetailsService dailyExpenseDetailsService;
+
+    @Resource
+    private ISysUserService sysUserService;
 
     /**
      * 查询日常记录_每日支出
@@ -139,5 +146,27 @@ public class DailyExpenseServiceImpl implements IDailyExpenseService {
     public int submit(DailyExpenseReqVo dailyExpense) {
         dailyExpense.getDailyExpense().setExpenseStatus("Y");
         return this.save(dailyExpense);
+    }
+
+    @Override
+    public void addDailyExpenseBatch() {
+        List<SysUser> sysUsers = sysUserService.selectUsers();
+
+        DateTime now = DateUtil.date();
+        int week = DateUtil.dayOfWeek(now);
+        week = (week == 1) ? 7 : week - 1;
+
+        DailyExpense dailyExpense = new DailyExpense();
+        dailyExpense.setDay(now);
+        dailyExpense.setWeek(String.valueOf(week));
+
+        sysUsers.forEach(user -> {
+            if ("admin".equals(user.getUserName())) {
+                return;
+            }
+            dailyExpense.setCreateBy(user.getUserName());
+
+            this.insertDailyExpense(dailyExpense);
+        });
     }
 }

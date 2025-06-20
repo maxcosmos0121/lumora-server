@@ -66,4 +66,8 @@ public interface IDailyExpenseService
 
     int submit(DailyExpenseReqVo dailyExpense);
 
+    /**
+     *  批量添加日常记录_每日支出
+     */
+    void addDailyExpenseBatch();
 }

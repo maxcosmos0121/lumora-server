@@ -149,7 +149,6 @@ public class DailyReportServiceImpl implements IDailyReportService {
 
     @Override
     public void addDailyReportBatch() {
-        SysUser sysUser = new SysUser();
         List<SysUser> sysUsers = sysUserService.selectUsers();
 
         DateTime now = DateUtil.date();
