@@ -41,7 +41,7 @@
                 LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
     </sql>
 
-    <select id="selectDailyReportList" parameterType="com.lumora.daily.dto.DailyReportDTO"
+    <select id="selectDailyReportList" parameterType="com.lumora.daily.vo.DailyReportVo"
             resultMap="DailyReportResult">
         <include refid="selectDailyReportVo"/>
         <where>

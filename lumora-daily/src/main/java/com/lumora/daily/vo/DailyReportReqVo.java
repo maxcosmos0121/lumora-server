@@ -1,7 +1,6 @@
 package com.lumora.daily.vo;
 
 import com.lumora.daily.domain.DailyReport;
-import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportContentDTO;
 import lombok.Data;
 

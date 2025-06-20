@@ -1,7 +1,7 @@
 package com.lumora.web.controller.daily;
 
 import com.lumora.daily.domain.DailyReport;
-import com.lumora.daily.dto.DailyReportDTO;
+import com.lumora.daily.vo.DailyReportVo;
 import com.lumora.daily.service.IDailyReportService;
 import com.lumora.common.annotation.Log;
 import com.lumora.common.core.controller.BaseController;
@@ -34,7 +34,7 @@ public class DailyReportController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('daily:report:list')")
     @GetMapping("/list")
-    public TableDataInfo list(DailyReportDTO dailyReport) {
+    public TableDataInfo list(DailyReportVo dailyReport) {
         startPage();
         List<DailyReport> list = dailyReportService.selectDailyReportList(dailyReport);
         return getDataTable(list);
@@ -46,7 +46,7 @@ public class DailyReportController extends BaseController {
     @PreAuthorize("@ss.hasPermi('daily:report:export')")
     @Log(title = "日常记录_每日日报", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, DailyReportDTO dailyReport) {
+    public void export(HttpServletResponse response, DailyReportVo dailyReport) {
         List<DailyReport> list = dailyReportService.selectDailyReportList(dailyReport);
         ExcelUtil<DailyReport> util = new ExcelUtil<DailyReport>(DailyReport.class);
         util.exportExcel(response, list, "日常记录_每日日报数据");

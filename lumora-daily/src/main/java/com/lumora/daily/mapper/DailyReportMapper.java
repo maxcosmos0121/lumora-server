@@ -1,7 +1,7 @@
 package com.lumora.daily.mapper;
 
 import com.lumora.daily.domain.DailyReport;
-import com.lumora.daily.dto.DailyReportDTO;
+import com.lumora.daily.vo.DailyReportVo;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface DailyReportMapper {
      * @param dailyReport 日常记录_每日日报
      * @return 日常记录_每日日报集合
      */
-    public List<DailyReport> selectDailyReportList(DailyReportDTO dailyReport);
+    public List<DailyReport> selectDailyReportList(DailyReportVo dailyReport);
 
     /**
      * 新增日常记录_每日日报

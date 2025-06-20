@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lumora.daily.mapper.DailyExpenseMapper">
+
+    <resultMap type="com.lumora.daily.domain.DailyExpense" id="DailyExpenseResult">
+        <result property="expenseId"    column="expense_id"    />
+        <result property="day"    column="day"    />
+        <result property="week"    column="week"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="expenseStatus"    column="expense_status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDailyExpenseVo">
+        select
+            de.expense_id, de.day, de.week, de.total_amount, de.expense_status, de.del_flag, de.create_by, de.create_time,
+            de.update_by, de.update_time, de.remark
+        from daily_expense AS de
+            LEFT JOIN sys_user AS u ON u.user_name = de.create_by
+            LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
+    </sql>
+
+    <select id="selectDailyExpenseList" parameterType="com.lumora.daily.vo.DailyExpenseVo" resultMap="DailyExpenseResult">
+        <include refid="selectDailyExpenseVo"/>
+        <where>
+            <if test="day != null ">and de.day like concat('%',#{day},'%')</if>
+            <if test="week != null  and week != ''"> and de.week = #{week}</if>
+        </where>
+    </select>
+
+    <select id="selectDailyExpenseByExpenseId" parameterType="Long" resultMap="DailyExpenseResult">
+        <include refid="selectDailyExpenseVo"/>
+        where expense_id = #{expenseId}
+    </select>
+
+    <insert id="insertDailyExpense" parameterType="com.lumora.daily.domain.DailyExpense" useGeneratedKeys="true" keyProperty="expenseId">
+        insert into daily_expense
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="day != null">day,</if>
+            <if test="week != null and week != ''">week,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="expenseStatus != null and expenseStatus != ''">expense_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="day != null">#{day},</if>
+            <if test="week != null and week != ''">#{week},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="expenseStatus != null and expenseStatus != ''">#{expenseStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDailyExpense" parameterType="com.lumora.daily.domain.DailyExpense">
+        update daily_expense
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="day != null">day = #{day},</if>
+            <if test="week != null and week != ''">week = #{week},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="expenseStatus != null and expenseStatus != ''">expense_status = #{expenseStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where expense_id = #{expenseId}
+    </update>
+
+    <delete id="deleteDailyExpenseByExpenseId" parameterType="Long">
+        delete from daily_expense where expense_id = #{expenseId}
+    </delete>
+
+    <delete id="deleteDailyExpenseByExpenseIds" parameterType="String">
+        delete from daily_expense where expense_id in
+        <foreach item="expenseId" collection="array" open="(" separator="," close=")">
+            #{expenseId}
+        </foreach>
+    </delete>
+</mapper>

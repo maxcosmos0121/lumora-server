@@ -7,7 +7,7 @@ import com.lumora.common.core.domain.entity.SysUser;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportContentDTO;
-import com.lumora.daily.dto.DailyReportDTO;
+import com.lumora.daily.vo.DailyReportVo;
 import com.lumora.daily.mapper.DailyReportMapper;
 import com.lumora.daily.service.IDailyReportContentService;
 import com.lumora.daily.service.IDailyReportService;
@@ -16,7 +16,6 @@ import com.lumora.daily.vo.DailyReportReqVo;
 import com.lumora.daily.vo.DailyReportRespVo;
 import com.lumora.system.service.ISysUserService;
 import jakarta.annotation.Resource;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +65,7 @@ public class DailyReportServiceImpl implements IDailyReportService {
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<DailyReport> selectDailyReportList(DailyReportDTO dailyReport) {
+    public List<DailyReport> selectDailyReportList(DailyReportVo dailyReport) {
         return dailyReportMapper.selectDailyReportList(dailyReport);
     }
 
