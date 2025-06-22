@@ -2,11 +2,16 @@ package com.lumora.daily.service.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+
+import cn.hutool.core.util.ReUtil;
 import com.lumora.common.annotation.DataScope;
 import com.lumora.common.core.domain.entity.SysUser;
+import com.lumora.daily.agentConfig.agent.DailyAgent;
+import com.lumora.daily.domain.DailyExerciseRecord;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
 import com.lumora.daily.dto.DailyReportContentDTO;
+import com.lumora.daily.service.IDailyExerciseRecordService;
 import com.lumora.daily.vo.DailyReportVo;
 import com.lumora.daily.mapper.DailyReportMapper;
 import com.lumora.daily.service.IDailyReportContentService;
@@ -19,6 +24,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -37,6 +43,12 @@ public class DailyReportServiceImpl implements IDailyReportService {
 
     @Resource
     private ISysUserService sysUserService;
+
+    @Resource
+    private IDailyExerciseRecordService dailyExerciseRecordService;
+
+    @Resource
+    private DailyAgent dailyAgent;
 
 
     /**
@@ -132,6 +144,7 @@ public class DailyReportServiceImpl implements IDailyReportService {
                     contentDTO.setReportId(report.getReportId());
                     contentDTO.setReportContentId(null);
                     dailyReportContentService.insertDailyReportContent(contentDTO);
+                    dailyReportParsing(report, contentDTO);
                     break;
                 }
                 case "delete": {
@@ -140,11 +153,32 @@ public class DailyReportServiceImpl implements IDailyReportService {
                 }
                 default: {
                     dailyReportContentService.updateDailyReportContent(contentDTO);
+                    dailyReportParsing(report, contentDTO);
                     break;
                 }
             }
+
+
         });
         return i;
+    }
+
+    private void dailyReportParsing(DailyReport report, DailyReportContentDTO contentDTO) {
+        if ("Y".equals(report.getReportStatus())) {
+            String contentType = contentDTO.getContentType();
+            if (contentType.equals("6")) {
+                DailyExerciseRecord dailyExerciseRecord = new DailyExerciseRecord();
+                dailyExerciseRecord.setReportId(report.getReportId());
+                dailyExerciseRecord.setReportContentId(contentDTO.getReportContentId());
+                dailyExerciseRecord.setDay(report.getDay());
+                dailyExerciseRecord.setWeek(report.getWeek());
+                String result = dailyAgent.chat(contentDTO.getContent());
+                String weight = ReUtil.get("<(.*?)>", result, 1);
+                dailyExerciseRecord.setWeight(new BigDecimal(weight));
+                dailyExerciseRecord.setCreateBy(report.getCreateBy());
+                dailyExerciseRecordService.insertDailyExerciseRecord(dailyExerciseRecord);
+            }
+        }
     }
 
     @Override

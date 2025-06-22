@@ -33,6 +33,12 @@
             <artifactId>lumora-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.lumora</groupId>
+            <artifactId>lumora-ai</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

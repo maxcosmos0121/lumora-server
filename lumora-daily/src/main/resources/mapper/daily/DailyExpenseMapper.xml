@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="day != null ">and de.day like concat('%',#{day},'%')</if>
             <if test="week != null  and week != ''"> and de.week = #{week}</if>
+            ${params.dataScope}
         </where>
     </select>
 

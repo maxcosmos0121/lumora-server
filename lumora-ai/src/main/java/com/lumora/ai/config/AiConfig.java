@@ -1,9 +1,8 @@
 package com.lumora.ai.config;
 
-import com.lumora.ai.service.IAiAssistant;
+
 import dev.langchain4j.community.model.zhipu.ZhipuAiChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.service.AiServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,8 +16,8 @@ import java.time.Duration;
 public class AiConfig {
 
     @Bean
-    public IAiAssistant aiAssistant() {
-        ChatLanguageModel model = ZhipuAiChatModel.builder()
+    public ChatLanguageModel aiAssistant() {
+        return ZhipuAiChatModel.builder()
                 .apiKey("49360798ae6b40d08cb4b9c4ad7569aa.LQZKL5WvLpZV21y6")
                 .model("GLM-4-Flash-250414")
                 .temperature(0.6)
@@ -28,10 +27,6 @@ public class AiConfig {
                 .connectTimeout(Duration.ofSeconds(60))
                 .writeTimeout(Duration.ofSeconds(60))
                 .readTimeout(Duration.ofSeconds(60))
-                .build();
-
-        return AiServices.builder(IAiAssistant.class)
-                .chatLanguageModel(model)
                 .build();
     }
 }

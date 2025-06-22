@@ -59,11 +59,6 @@
             <artifactId>lumora-daily</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.lumora</groupId>
-            <artifactId>lumora-ai</artifactId>
-        </dependency>
-
 
 
         <!--测试类-->

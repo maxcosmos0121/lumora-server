@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lumora.daily.mapper.DailyExerciseRecordMapper">
+
+    <resultMap type="com.lumora.daily.domain.DailyExerciseRecord" id="DailyExerciseRecordResult">
+        <result property="exerciseRecordId"    column="exercise_record_id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="reportContentId"    column="report_content_id"    />
+        <result property="day"    column="day"    />
+        <result property="week"    column="week"    />
+        <result property="weight"    column="weight"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDailyExerciseRecordVo">
+        SELECT
+            der.exercise_record_id,
+            der.report_id,
+            der.report_content_id,
+            der.day,
+            der.week,
+            der.weight,
+            der.del_flag,
+            der.create_by,
+            der.create_time,
+            der.update_by,
+            der.update_time,
+            der.remark
+        FROM
+            daily_exercise_record AS der
+                LEFT JOIN sys_user AS u ON u.user_name = der.create_by
+                LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
+    </sql>
+
+    <select id="selectDailyExerciseRecordList" parameterType="com.lumora.daily.vo.DailyExerciseRecordVo" resultMap="DailyExerciseRecordResult">
+        <include refid="selectDailyExerciseRecordVo"/>
+        <where>
+            <if test="day != null "> and der.day like concat('%',#{day},'%')</if>
+            <if test="week != null  and week != ''"> and der.week = #{week}</if>
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="selectDailyExerciseRecordByExerciseRecordId" parameterType="Long" resultMap="DailyExerciseRecordResult">
+        <include refid="selectDailyExerciseRecordVo"/>
+        where exercise_record_id = #{exerciseRecordId}
+    </select>
+
+    <insert id="insertDailyExerciseRecord" parameterType="com.lumora.daily.domain.DailyExerciseRecord" useGeneratedKeys="true" keyProperty="exerciseRecordId">
+        insert into daily_exercise_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">report_id,</if>
+            <if test="reportContentId != null">report_content_id,</if>
+            <if test="day != null">day,</if>
+            <if test="week != null and week != ''">week,</if>
+            <if test="weight != null">weight,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">#{reportId},</if>
+            <if test="reportContentId != null">#{reportContentId},</if>
+            <if test="day != null">#{day},</if>
+            <if test="week != null and week != ''">#{week},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDailyExerciseRecord" parameterType="com.lumora.daily.domain.DailyExerciseRecord">
+        update daily_exercise_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportId != null">report_id = #{reportId},</if>
+            <if test="reportContentId != null">report_content_id = #{reportContentId},</if>
+            <if test="day != null">day = #{day},</if>
+            <if test="week != null and week != ''">week = #{week},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where exercise_record_id = #{exerciseRecordId}
+    </update>
+
+    <delete id="deleteDailyExerciseRecordByExerciseRecordId" parameterType="Long">
+        delete from daily_exercise_record where exercise_record_id = #{exerciseRecordId}
+    </delete>
+
+    <delete id="deleteDailyExerciseRecordByExerciseRecordIds" parameterType="String">
+        delete from daily_exercise_record where exercise_record_id in
+        <foreach item="exerciseRecordId" collection="array" open="(" separator="," close=")">
+            #{exerciseRecordId}
+        </foreach>
+    </delete>
+</mapper>
