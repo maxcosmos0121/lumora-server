@@ -3,6 +3,7 @@ package com.lumora.daily.service.impl;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReUtil;
 import com.lumora.common.annotation.DataScope;
 import com.lumora.common.core.domain.entity.SysUser;
@@ -174,6 +175,9 @@ public class DailyReportServiceImpl implements IDailyReportService {
                 dailyExerciseRecord.setWeek(report.getWeek());
                 String result = dailyAgent.chat(contentDTO.getContent());
                 String weight = ReUtil.get("<(.*?)>", result, 1);
+                if(ObjectUtil.isEmpty(weight)){
+                    return;
+                }
                 dailyExerciseRecord.setWeight(new BigDecimal(weight));
                 dailyExerciseRecord.setCreateBy(report.getCreateBy());
                 dailyExerciseRecordService.insertDailyExerciseRecord(dailyExerciseRecord);
