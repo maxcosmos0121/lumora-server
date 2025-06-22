@@ -59,6 +59,33 @@
             <artifactId>lumora-daily</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.lumora</groupId>
+            <artifactId>lumora-ai</artifactId>
+        </dependency>
+
+
+
+        <!--测试类-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--测试类-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--测试类-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>

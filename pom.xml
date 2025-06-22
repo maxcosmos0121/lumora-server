@@ -29,7 +29,7 @@
         <commons.io.version>2.19.0</commons.io.version>
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
-        <jwt.version>0.9.1</jwt.version>
+        <jwt.version>0.12.6</jwt.version>
         <mysql.version>8.2.0</mysql.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jakarta.version>6.0.0</jakarta.version>
@@ -155,6 +155,24 @@
                 <version>5.8.38</version>
             </dependency>
 
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-spring-boot-starter</artifactId>
+                <version>1.0.0-beta3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-community-zhipu-ai</artifactId>
+                <version>1.0.0-beta3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j</artifactId>
+                <version>1.0.0-beta3</version>
+            </dependency>
+
             <!-- 验证码 -->
             <dependency>
                 <groupId>pro.fessional</groupId>
@@ -196,6 +214,12 @@
                 <version>${lumora.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.lumora</groupId>
+                <artifactId>lumora-ai</artifactId>
+                <version>${lumora.version}</version>
+            </dependency>
+
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.lumora</groupId>
@@ -214,6 +238,7 @@
         <module>lumora-generator</module>
         <module>lumora-common</module>
         <module>lumora-daily</module>
+        <module>lumora-ai</module>
     </modules>
     <packaging>pom</packaging>
 
