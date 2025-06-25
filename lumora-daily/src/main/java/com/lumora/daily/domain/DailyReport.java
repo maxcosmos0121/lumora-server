@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -32,7 +33,7 @@ public class DailyReport extends BaseEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "日期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date day;
+    private LocalDate day;
 
     /**
      * 星期（1-7）

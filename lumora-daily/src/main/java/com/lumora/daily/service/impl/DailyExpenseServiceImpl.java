@@ -1,5 +1,6 @@
 package com.lumora.daily.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import cn.hutool.core.date.DateTime;
@@ -152,9 +153,8 @@ public class DailyExpenseServiceImpl implements IDailyExpenseService {
     public void addDailyExpenseBatch() {
         List<SysUser> sysUsers = sysUserService.selectUsers();
 
-        DateTime now = DateUtil.date();
-        int week = DateUtil.dayOfWeek(now);
-        week = (week == 1) ? 7 : week - 1;
+        LocalDate now = LocalDate.now(); // 来自 java.time.LocalDate
+        int week = now.getDayOfWeek().getValue();
 
         DailyExpense dailyExpense = new DailyExpense();
         dailyExpense.setDay(now);

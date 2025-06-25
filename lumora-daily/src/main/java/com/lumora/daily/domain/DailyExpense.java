@@ -1,9 +1,12 @@
 package com.lumora.daily.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lumora.common.core.domain.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lumora.common.annotation.Excel;
@@ -14,6 +17,8 @@ import com.lumora.common.annotation.Excel;
  * @author leo
  * @date 2025-06-20
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class DailyExpense extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -24,7 +29,7 @@ public class DailyExpense extends BaseEntity
     /** 日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "日期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date day;
+    private LocalDate day;
 
     /** 星期（1-7） */
     @Excel(name = "星期", readConverterExp = "1=-7")
@@ -40,81 +45,4 @@ public class DailyExpense extends BaseEntity
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
-
-    public void setExpenseId(Long expenseId)
-    {
-        this.expenseId = expenseId;
-    }
-
-    public Long getExpenseId()
-    {
-        return expenseId;
-    }
-
-    public void setDay(Date day)
-    {
-        this.day = day;
-    }
-
-    public Date getDay()
-    {
-        return day;
-    }
-
-    public void setWeek(String week)
-    {
-        this.week = week;
-    }
-
-    public String getWeek()
-    {
-        return week;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount)
-    {
-        this.totalAmount = totalAmount;
-    }
-
-    public BigDecimal getTotalAmount()
-    {
-        return totalAmount;
-    }
-
-    public void setExpenseStatus(String expenseStatus)
-    {
-        this.expenseStatus = expenseStatus;
-    }
-
-    public String getExpenseStatus()
-    {
-        return expenseStatus;
-    }
-
-    public void setDelFlag(String delFlag)
-    {
-        this.delFlag = delFlag;
-    }
-
-    public String getDelFlag()
-    {
-        return delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("expenseId", getExpenseId())
-            .append("day", getDay())
-            .append("week", getWeek())
-            .append("totalAmount", getTotalAmount())
-            .append("expenseStatus", getExpenseStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
-    }
 }

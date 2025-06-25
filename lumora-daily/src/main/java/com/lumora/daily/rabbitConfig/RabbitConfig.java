@@ -14,7 +14,7 @@ public class RabbitConfig {
      */
     @Bean
     public Queue dailyAnalyzeQueue() {
-        return new Queue("dailyAnalyzeQueue");
+        return new Queue("dailyAnalyzeQueue", false);
     }
 
 }

@@ -8,9 +8,11 @@ import cn.hutool.core.util.ReUtil;
 import com.lumora.common.annotation.DataScope;
 import com.lumora.common.core.domain.entity.SysUser;
 import com.lumora.daily.agentConfig.agent.DailyAgent;
+import com.lumora.daily.consumer.DailyAnalyzeQueueReceiver;
 import com.lumora.daily.domain.DailyExerciseRecord;
 import com.lumora.daily.domain.DailyReport;
 import com.lumora.daily.domain.DailyReportContent;
+import com.lumora.daily.dto.DailyAnalyzeQueueMessageDTO;
 import com.lumora.daily.dto.DailyReportContentDTO;
 import com.lumora.daily.service.IDailyExerciseRecordService;
 import com.lumora.daily.vo.DailyReportVo;
@@ -22,11 +24,15 @@ import com.lumora.daily.vo.DailyReportReqVo;
 import com.lumora.daily.vo.DailyReportRespVo;
 import com.lumora.system.service.ISysUserService;
 import jakarta.annotation.Resource;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 日常记录_每日日报Service业务层处理
@@ -46,10 +52,7 @@ public class DailyReportServiceImpl implements IDailyReportService {
     private ISysUserService sysUserService;
 
     @Resource
-    private IDailyExerciseRecordService dailyExerciseRecordService;
-
-    @Resource
-    private DailyAgent dailyAgent;
+    private AmqpTemplate rabbitTemplate;
 
 
     /**
@@ -166,22 +169,10 @@ public class DailyReportServiceImpl implements IDailyReportService {
 
     private void dailyReportParsing(DailyReport report, DailyReportContentDTO contentDTO) {
         if ("Y".equals(report.getReportStatus())) {
-            String contentType = contentDTO.getContentType();
-            if (contentType.equals("6")) {
-                DailyExerciseRecord dailyExerciseRecord = new DailyExerciseRecord();
-                dailyExerciseRecord.setReportId(report.getReportId());
-                dailyExerciseRecord.setReportContentId(contentDTO.getReportContentId());
-                dailyExerciseRecord.setDay(report.getDay());
-                dailyExerciseRecord.setWeek(report.getWeek());
-                String result = dailyAgent.chat(contentDTO.getContent());
-                String weight = ReUtil.get("<(.*?)>", result, 1);
-                if(ObjectUtil.isEmpty(weight)){
-                    return;
-                }
-                dailyExerciseRecord.setWeight(new BigDecimal(weight));
-                dailyExerciseRecord.setCreateBy(report.getCreateBy());
-                dailyExerciseRecordService.insertDailyExerciseRecord(dailyExerciseRecord);
-            }
+            DailyAnalyzeQueueMessageDTO dailyAnalyzeQueueMessageDTO = new DailyAnalyzeQueueMessageDTO();
+            dailyAnalyzeQueueMessageDTO.setDailyReport(report);
+            dailyAnalyzeQueueMessageDTO.setDailyReportContentDTO(contentDTO);
+            rabbitTemplate.convertAndSend("dailyAnalyzeQueue", dailyAnalyzeQueueMessageDTO);
         }
     }
 
@@ -189,9 +180,8 @@ public class DailyReportServiceImpl implements IDailyReportService {
     public void addDailyReportBatch() {
         List<SysUser> sysUsers = sysUserService.selectUsers();
 
-        DateTime now = DateUtil.date();
-        int week = DateUtil.dayOfWeek(now);
-        week = (week == 1) ? 7 : week - 1;
+        LocalDate now = LocalDate.now(); // 来自 java.time.LocalDate
+        int week = now.getDayOfWeek().getValue();
 
         DailyReport dailyReport = new DailyReport();
         dailyReport.setDay(now);
