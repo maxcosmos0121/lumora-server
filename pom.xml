@@ -34,6 +34,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jakarta.version>6.0.0</jakarta.version>
         <springdoc.version>2.6.0</springdoc.version>
+        <rabbitmq.version>3.5.3</rabbitmq.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -141,6 +142,12 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${rabbitmq.version}</version>
             </dependency>
 
             <dependency>
